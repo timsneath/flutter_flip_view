@@ -1,4 +1,4 @@
-package com.wosloveslife.flutterflipviewexample;
+package com.example.example;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
