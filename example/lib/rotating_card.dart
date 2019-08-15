@@ -27,7 +27,6 @@ class _RotatingCardState extends State<RotatingCard>
       if (!_focusNode.hasFocus && _animationController.isCompleted) {
         setState(() {
           FocusScope.of(context).requestFocus(_focusNode);
-          print('complete  ${_focusNode.hasFocus}');
         });
       } else if (_focusNode.hasFocus && !_animationController.isCompleted) {
         _focusNode.unfocus();
@@ -98,12 +97,12 @@ class _RotatingCardState extends State<RotatingCard>
                   // width: 48,
                   // height: 48,
                   alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(60),
-                    color: Colors.amber,
-                  ),
+                  // decoration: BoxDecoration(
+                  //   borderRadius: BorderRadius.circular(60),
+                  //   color: Colors.amber,
+                  // ),
                   child: Text(
-                    'Secure message received',
+                    'Secret message received',
                     style: TextStyle(
                       fontSize: 24,
                       color: Colors.white,
@@ -130,7 +129,7 @@ class _RotatingCardState extends State<RotatingCard>
           Padding(
             padding: const EdgeInsets.all(24.0),
             child: Text(
-              'Enter Password Or Verify Fingerprint ID',
+              'Enter secret code to access message',
               style: TextStyle(
                 fontSize: 16,
               ),
