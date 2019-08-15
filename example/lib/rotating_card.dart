@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_flip_view/flutter_flip_view.dart';
 
-class SimpleExample extends StatefulWidget {
+void main() => runApp(MaterialApp(home: RotatingCard()));
+
+class RotatingCard extends StatefulWidget {
   @override
-  _SimpleExampleState createState() => _SimpleExampleState();
+  _RotatingCardState createState() => _RotatingCardState();
 }
 
-class _SimpleExampleState extends State<SimpleExample>
+class _RotatingCardState extends State<RotatingCard>
     with SingleTickerProviderStateMixin {
   AnimationController _animationController;
   Animation<double> _curvedAnimation;
 
-  FocusNode _focusNode = FocusNode();
+  final _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -21,6 +23,16 @@ class _SimpleExampleState extends State<SimpleExample>
         vsync: this, duration: Duration(milliseconds: 1000));
     _curvedAnimation =
         CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
+    _animationController.addStatusListener((AnimationStatus status) {
+      if (!_focusNode.hasFocus && _animationController.isCompleted) {
+        setState(() {
+          FocusScope.of(context).requestFocus(_focusNode);
+          print('complete  ${_focusNode.hasFocus}');
+        });
+      } else if (_focusNode.hasFocus && !_animationController.isCompleted) {
+        _focusNode.unfocus();
+      }
+    });
   }
 
   @override
@@ -43,11 +55,11 @@ class _SimpleExampleState extends State<SimpleExample>
     return MaterialApp(
       home: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(32.0),
           child: Center(
             child: FlipView(
               animationController: _curvedAnimation,
-              front: _buildCard(() => _flip(true)),
+              front: _buildFrontSide(() => _flip(true)),
               back: _buildBackSide(),
             ),
           ),
@@ -56,7 +68,7 @@ class _SimpleExampleState extends State<SimpleExample>
     );
   }
 
-  Widget _buildCard(GestureTapCallback onTap) {
+  Widget _buildFrontSide(GestureTapCallback onTap) {
     return AspectRatio(
       aspectRatio: 0.7,
       child: Card(
@@ -83,15 +95,15 @@ class _SimpleExampleState extends State<SimpleExample>
               onTap: onTap,
               child: Center(
                 child: Container(
-                  width: 48,
-                  height: 48,
+                  // width: 48,
+                  // height: 48,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(60),
                     color: Colors.amber,
                   ),
                   child: Text(
-                    'You have a message',
+                    'Secure message received',
                     style: TextStyle(
                       fontSize: 24,
                       color: Colors.white,

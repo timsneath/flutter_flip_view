@@ -2,7 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-typedef FlipWidgetBuilder = Widget Function(BuildContext context, bool isBackground);
+typedef FlipWidgetBuilder = Widget Function(
+    BuildContext context, bool isBackground);
 
 class FlipView extends StatefulWidget {
   final Widget front;
@@ -26,7 +27,8 @@ class FlipView extends StatefulWidget {
   FlipViewState createState() => FlipViewState();
 }
 
-class FlipViewState extends State<FlipView> with SingleTickerProviderStateMixin {
+class FlipViewState extends State<FlipView>
+    with SingleTickerProviderStateMixin {
   Animation<double> _animation;
   AnimationStatus _lastStatus;
 
@@ -60,7 +62,8 @@ class FlipViewState extends State<FlipView> with SingleTickerProviderStateMixin 
   }
 
   Animation<double> _calculateTweenSequence(AxisDirection direction) {
-    final reverse = (direction == AxisDirection.right || direction == AxisDirection.down);
+    final reverse =
+        (direction == AxisDirection.right || direction == AxisDirection.down);
     final frontTween = Tween(
       begin: 0.0,
       end: reverse ? -pi / 2.0 : pi / 2.0,
@@ -97,36 +100,6 @@ class FlipViewState extends State<FlipView> with SingleTickerProviderStateMixin 
             ],
             index: widget.animationController.value < 0.5 ? 0 : 1,
           ),
-        );
-      },
-    );
-
-    return AnimatedBuilder(
-      animation: _animation,
-      builder: (BuildContext context, Widget child) {
-        final direction = (_animation.status == AnimationStatus.forward ||
-                _animation.status == AnimationStatus.completed)
-            ? widget.goBackDirection
-            : widget.goFrontDirection;
-        return Stack(
-          children: <Widget>[
-            Offstage(
-              offstage: widget.animationController.value > 0.5,
-              child: Transform(
-                transform: _buildTransform(direction),
-                alignment: Alignment.center,
-                child: widget.front,
-              ),
-            ),
-            Offstage(
-              offstage: widget.animationController.value <= 0.5,
-              child: Transform(
-                transform: _buildTransform(direction),
-                alignment: Alignment.center,
-                child: widget.back,
-              ),
-            ),
-          ],
         );
       },
     );
